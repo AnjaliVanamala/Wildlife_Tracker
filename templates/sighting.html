@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>New Sighting</title>
+</head>
+<body>
+    <h2>New Sightings</h2>
+    <form action="/sighting" method="post">
+        <label for="name">Bird Name:</label><br>
+        <input type="text" id="name" name="name"><br>
+        <label for="number">Number:</label><br>
+        <input type="number" id="number" name="number"><br>
+        <label for="date">Date:</label><br>
+        <input type="date" id="date" name="date" value="{{ date or '' }}"><br>
+        <label for="confidence">Confidence:</label><br>
+        <input type="text" id="confidence" name="confidence" value="{{ confidence or '' }}"><br>
+    </form>
+</body>
+</html>
