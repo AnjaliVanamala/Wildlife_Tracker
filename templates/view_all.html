@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>All Sightings</title>
+</head>
+<body>
+    <table>
+        {% for sighting in sightings %}
+        <tr>
+            {% for item in bird %}
+                <td>{{item}}</td>
+            {% endfor %}
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>
