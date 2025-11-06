@@ -1,20 +1,42 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>New Sighting</title>
-</head>
-<body>
-    <h2>New Sightings</h2>
-    <form action="/sighting" method="post">
-        <label for="name">Bird Name:</label><br>
-        <input type="text" id="name" name="name"><br>
-        <label for="number">Number:</label><br>
-        <input type="number" id="number" name="number"><br>
-        <label for="date">Date:</label><br>
-        <input type="date" id="date" name="date" value="{{ date or '' }}"><br>
-        <label for="confidence">Confidence:</label><br>
-        <input type="text" id="confidence" name="confidence" value="{{ confidence or '' }}"><br>
-    </form>
-    <p>"Added {{ name or '' }} {{ number or '' }}"</p>
-</body>
-</html>
+{% extends "base.html" %}
+{% block content %}
+<h2>Record a Sighting</h2>
+<form method="POST">
+    <input type="text" name="animal" placeholder="Animal" required><br>
+    <input type="text" name="location" placeholder="Location" required><br>
+
+    <label>Date and Time:</label><br>
+    <input type="date" name="day" required>
+    <input type="time" name="time"><br><br>
+
+    <label>Total Number:</label><br>
+    <input type="number" name="number" min="1" required><br><br>
+
+    <label>Break down by sex?</label>
+    <select id="sex_breakdown" name="sex_breakdown" onchange="toggleSexFields()">
+        <option value="no" selected>No</option>
+        <option value="yes">Yes</option>
+    </select><br><br>
+
+    <div id="sex_fields" style="display: none;">
+        <label>Male:</label><br>
+        <input type="number" name="male_count" min="0"><br>
+        <label>Female:</label><br>
+        <input type="number" name="female_count" min="0"><br>
+    </div>
+
+    <button type="submit">Submit</button>
+</form>
+
+<hr>
+
+<a href="{{ url_for('dashboard') }}"><button>Back to Dashboard</button></a>
+
+<script>
+function toggleSexFields() {
+    const sexFields = document.getElementById('sex_fields');
+    const select = document.getElementById('sex_breakdown');
+    sexFields.style.display = select.value === 'yes' ? 'block' : 'none';
+}
+</script>
+{% endblock %}

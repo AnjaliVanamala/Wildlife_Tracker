@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2>Register</h2>
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% if messages %} <ul>
+{% for category, message in messages %}
+{{ message }} </li>
+{% endfor %} </ul>
+{% endif %}
+{% endwith %}
+
+<form method="POST" action="{{ url_for('register') }}">
+    <label for="username">Username:</label><br>
+    <input type="text" name="username" id="username" required><br><br>
+
+
+<label for="password">Password:</label><br>
+<input type="password" name="password" id="password" required><br><br>
+
+<button type="submit">Register</button>
+
+
+</form>
+
+<p>Already have an account? <a href="{{ url_for('login') }}">Login here</a>.</p>
+{% endblock %}
