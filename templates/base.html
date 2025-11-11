@@ -6,55 +6,76 @@
     <title>{{ title if title else "Wildlife Tracker" }}</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <style>
-        /* fallback styling if style.css is missing */
-        body {
+        /* Reset */
+        * {
+        box-sizing: border-box;
         margin: 0;
+        padding: 0;
+        }
+
+        body {
         font-family: "Segoe UI", Roboto, sans-serif;
-        background: #f7f9fb;
+        background: #f5f7fa;
         color: #222;
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
         }
 
         header {
+        width: 100%;
         background: #2c6e49;
         color: white;
         padding: 1rem 2rem;
-        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         display: flex;
         justify-content: space-between;
         align-items: center;
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
         }
 
         header h1 {
-        margin: 0;
-        font-size: 1.5rem;
+        font-size: 1.6rem;
+        font-weight: 600;
+        }
+
+        nav {
+        display: flex;
+        gap: 1rem;
         }
 
         nav a {
-        color: #fff;
+        color: white;
         text-decoration: none;
-        margin-left: 1rem;
         font-weight: 500;
+        transition: opacity 0.2s ease;
         }
 
         nav a:hover {
-        text-decoration: underline;
+        opacity: 0.8;
         }
 
         .container {
-        max-width: 900px;
+        flex: 1;
+        width: 90%;                
+        max-width: 1400px;      
         margin: 2rem auto;
-        background: #fff;
+        background: white;
         padding: 2rem;
         border-radius: 12px;
         box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        transition: width 0.3s ease;
         }
 
         footer {
         text-align: center;
         padding: 1rem;
-        color: #777;
+        color: #666;
         font-size: 0.9rem;
-        margin-top: 3rem;
+        background: #f0f0f0;
+        margin-top: auto;
         }
     </style>
 </head>
@@ -68,10 +89,8 @@
         </nav>
     </header>
 
-    <main>
-        <div class="container">
+    <main class="container">
         {% block content %}{% endblock %}
-        </div>
     </main>
 
     <footer>
