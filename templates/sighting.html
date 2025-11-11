@@ -1,42 +1,81 @@
 {% extends "base.html" %}
 {% block content %}
-<h2>Record a Sighting</h2>
-<form method="POST">
-    <input type="text" name="animal" placeholder="Animal" required><br>
-    <input type="text" name="location" placeholder="Location" required><br>
+<h2>Record Sightings</h2>
 
-    <label>Date and Time:</label><br>
-    <input type="date" name="day" required>
-    <input type="time" name="time"><br><br>
+<form method="POST" id="sightingsForm">
+  <table border="1" cellpadding="6" style="border-collapse: collapse; width: 100%;">
+    <thead>
+      <tr>
+        <th>Animal</th>
+        <th>Location</th>
+        <th>Date</th>
+        <th>Time</th>
+        <th>Total #</th>
+        <th>Breakdown?</th>
+        <th>Male</th>
+        <th>Female</th>
+        <th>Remove</th>
+      </tr>
+    </thead>
+    <tbody id="sightingsTable">
+      <tr>
+        <td><input type="text" name="animal[]" required></td>
+        <td><input type="text" name="location[]" required></td>
+        <td><input type="date" name="day[]" required></td>
+        <td><input type="time" name="time[]"></td>
+        <td><input type="number" name="number[]" min="1" required></td>
+        <td>
+          <select name="sex_breakdown[]" onchange="toggleSexFields(this)">
+            <option value="no" selected>No</option>
+            <option value="yes">Yes</option>
+          </select>
+        </td>
+        <td><input type="number" name="male_count[]" min="0" disabled></td>
+        <td><input type="number" name="female_count[]" min="0" disabled></td>
+        <td><button type="button" onclick="removeRow(this)">❌</button></td>
+      </tr>
+    </tbody>
+  </table>
 
-    <label>Total Number:</label><br>
-    <input type="number" name="number" min="1" required><br><br>
-
-    <label>Break down by sex?</label>
-    <select id="sex_breakdown" name="sex_breakdown" onchange="toggleSexFields()">
-        <option value="no" selected>No</option>
-        <option value="yes">Yes</option>
-    </select><br><br>
-
-    <div id="sex_fields" style="display: none;">
-        <label>Male:</label><br>
-        <input type="number" name="male_count" min="0"><br>
-        <label>Female:</label><br>
-        <input type="number" name="female_count" min="0"><br>
-    </div>
-
-    <button type="submit">Submit</button>
+  <br>
+  <button type="button" onclick="addRow()">➕ Add Sighting</button>
+  <button type="submit">Submit All</button>
 </form>
 
 <hr>
-
 <a href="{{ url_for('dashboard') }}"><button>Back to Dashboard</button></a>
 
 <script>
-function toggleSexFields() {
-    const sexFields = document.getElementById('sex_fields');
-    const select = document.getElementById('sex_breakdown');
-    sexFields.style.display = select.value === 'yes' ? 'block' : 'none';
+function toggleSexFields(select) {
+  const row = select.closest('tr');
+  const maleInput = row.querySelector('input[name="male_count[]"]');
+  const femaleInput = row.querySelector('input[name="female_count[]"]');
+  const enable = select.value === 'yes';
+  maleInput.disabled = !enable;
+  femaleInput.disabled = !enable;
+}
+
+function addRow() {
+  const table = document.getElementById('sightingsTable');
+  const newRow = table.rows[0].cloneNode(true);
+  newRow.querySelectorAll('input').forEach(input => {
+    input.value = '';
+    if (input.name.includes('male') || input.name.includes('female')) {
+      input.disabled = true;
+    }
+  });
+  newRow.querySelector('select').value = 'no';
+  table.appendChild(newRow);
+}
+
+function removeRow(button) {
+  const table = document.getElementById('sightingsTable');
+  if (table.rows.length > 1) {
+    button.closest('tr').remove();
+  } else {
+    alert("You must have at least one sighting row.");
+  }
 }
 </script>
+
 {% endblock %}

@@ -2,12 +2,80 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>{{ title if title else "Flask App" }}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title if title else "Wildlife Tracker" }}</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        /* fallback styling if style.css is missing */
+        body {
+        margin: 0;
+        font-family: "Segoe UI", Roboto, sans-serif;
+        background: #f7f9fb;
+        color: #222;
+        }
+
+        header {
+        background: #2c6e49;
+        color: white;
+        padding: 1rem 2rem;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        }
+
+        header h1 {
+        margin: 0;
+        font-size: 1.5rem;
+        }
+
+        nav a {
+        color: #fff;
+        text-decoration: none;
+        margin-left: 1rem;
+        font-weight: 500;
+        }
+
+        nav a:hover {
+        text-decoration: underline;
+        }
+
+        .container {
+        max-width: 900px;
+        margin: 2rem auto;
+        background: #fff;
+        padding: 2rem;
+        border-radius: 12px;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+
+        footer {
+        text-align: center;
+        padding: 1rem;
+        color: #777;
+        font-size: 0.9rem;
+        margin-top: 3rem;
+        }
+    </style>
 </head>
 <body>
-    <div class="container">
+    <header>
+        <h1>{{ title if title else "Wildlife Tracker" }}</h1>
+        <nav>
+        <a href="{{ url_for('dashboard') }}">Dashboard</a>
+        <a href="{{ url_for('sighting') }}">Record</a>
+        <a href="{{ url_for('logout') }}">Logout</a>
+        </nav>
+    </header>
+
+    <main>
+        <div class="container">
         {% block content %}{% endblock %}
-    </div>
+        </div>
+    </main>
+
+    <footer>
+        &copy; {{ current_year if current_year else "2025" }} Wildlife Tracker
+    </footer>
 </body>
 </html>
