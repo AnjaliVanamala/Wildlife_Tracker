@@ -94,28 +94,48 @@ def sighting():
         return redirect(url_for('login'))
 
     if request.method == 'POST':
-        animal = request.form.get('animal')
-        location = request.form.get('location')
-        day = request.form.get('day')
-        time = request.form.get('time')
-        number = int(request.form.get('number'))
-        male_count = request.form.get('male_count')
-        female_count = request.form.get('female_count')
+        animals = request.form.getlist('animal[]')
+        locations = request.form.getlist('location[]')
+        days = request.form.getlist('day[]')
+        times = request.form.getlist('time[]')
+        numbers = request.form.getlist('number[]')
+        sex_breakdowns = request.form.getlist('sex_breakdown[]')
+        males = request.form.getlist('male_count[]')
+        females = request.form.getlist('female_count[]')
 
-        male_count = int(male_count) if male_count else None
-        female_count = int(female_count) if female_count else None
+        total_rows = len(animals)
 
-        sighting = Sighting(
-            user=session['user'],
-            animal=animal,
-            location=location,
-            day=day,
-            time=time,
-            number=number,
-            male_count=male_count,
-            female_count=female_count
-        )
-        db.session.add(sighting)
+        # Normalize list lengths — missing values become ''
+        def safe_get(lst, idx):
+            return lst[idx] if idx < len(lst) else ''
+
+        for i in range(total_rows):
+            animal = animals[i]
+            location = locations[i]
+            day = days[i]
+            time = times[i]
+            number = int(numbers[i])
+
+            # Get male/female safely
+            male_val = safe_get(males, i)
+            female_val = safe_get(females, i)
+
+            male_count = int(male_val) if male_val else None
+            female_count = int(female_val) if female_val else None
+
+            sighting = Sighting(
+                user=session['user'],
+                animal=animal,
+                location=location,
+                day=day,
+                time=time,
+                number=number,
+                male_count=male_count,
+                female_count=female_count
+            )
+
+            db.session.add(sighting)
+
         db.session.commit()
         return redirect(url_for('dashboard'))
 
