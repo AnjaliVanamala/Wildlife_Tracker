@@ -12,4 +12,4 @@ This project is a work in progress, but it can run and store sightings in the ba
 ```
  python .\app.py
  ```
- This will start the application, accessible at http://127.0.0.1:5000
+ This will start the application, accessible on your local computer at http://127.0.0.1:5000. 
